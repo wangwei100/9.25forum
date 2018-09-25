@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demohot.forum.mapper.BbsMapper">
+	<insert id="insert">
+		insert into bbs (title,content,time) values
+		(#{title},#{content},#{time});
+	</insert>
+
+	<select id="list" resultType="Bbs">
+		select * from bbs;
+	</select>
+
+	<select id="get" resultType="Bbs">
+		select * from bbs where id=#{id}
+		limit 1;
+	</select>
+
+	<select id="countByTitle" resultType="int">
+		select count(*) from bbs
+		where 1=1
+		<if test="null !=title">and title=#{title}</if>
+	</select>
+
+	<select id="getByTitle" resultType="Bbs">
+		select * from bbs where 1=1
+		<if test="null != title"> and title = #{title} </if>
+		limit #{offset},#{pageSize}
+	</select>
+
+</mapper>

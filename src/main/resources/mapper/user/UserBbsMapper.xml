@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demohot.forum.mapper.UserBbsMapper">
+	<insert id="insert">
+		insert into user_bbs (user_id,bbs_id) values
+		(#{user_id},#{bbs_id});
+	</insert>
+
+	<delete id="delete">
+		delete from user_bbs where user_id=#{user_id} and
+		bbs_id=#{bbs_id} limit 1;
+	</delete>
+
+	<select id="list" resultType="UserBbs">
+		select * from user_bbs;
+	</select>
+
+	<select id="get" resultType="UserBbs">
+		select * from user_bbs where id =
+		#{id} limit 1;
+	</select>
+
+	<select id="getByUserIdBbsId" resultType="UserBbs">>
+		select * from user_bbs
+		where user_id=#{user_id} and bbs_id=#{bbs_id} limit 1;
+	</select>
+
+	<select id="getById" resultType="UserBbs">
+		select * from user_bbs where
+		id=#{id};
+	</select>
+
+	<select id="countByUserId" resultType="int">
+		select count(*) from
+		user_bbs where user_id=#{user_id};
+	</select>
+</mapper>
