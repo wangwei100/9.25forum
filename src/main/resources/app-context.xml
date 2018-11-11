@@ -33,7 +33,7 @@
 		<property name="url"
 			value="jdbc:mysql://127.0.0.1:3306/forum?serverTimezone=GMT&amp;useUnicode=true&amp;characterEncoding=utf-8" />
 		<property name="username" value="root" />
-		<property name="password" value="111111" />
+		<property name="password" value="" />
 	</bean>
 
 	<bean id="sqlSessionFactory"

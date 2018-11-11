@@ -1,6 +1,8 @@
 package com.demohot.forum.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,10 +79,10 @@ public class UserController {
 	}
 
 	@RequestMapping("/user/do_publish")
-	public ModelAndView doPublish(String title, String content, Date time, HttpSession session) {
+	public ModelAndView doPublish(Integer user_id, String title, String content, Date time, HttpSession session) {
 		// 判断用户登录
-		User hasUser = (User) session.getAttribute("loginUser");
-		if (null == hasUser) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		if (null == loginUser) {
 			return new ModelAndView("redirect:/user/login");
 		}
 		Map<String, Object> model = new HashMap<>();
@@ -95,13 +98,50 @@ public class UserController {
 			model.put("contentMessage", "内容不能为空");
 			return new ModelAndView("/user/publish.jsp", model);
 		}
-		// Date date = new Date();
-		// date.setHours(new Date().getHours() + 3);
+		Date date1 = new Date();
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.HOUR, 3);
+		date1 = c.getTime();
 		Bbs bbs = new Bbs();
+		
+		bbs.setUser_id(loginUser.getId());
 		bbs.setTitle(title);
 		bbs.setContent(content);
-		bbs.setTime(new Date());
+		bbs.setTime(date1);
 		bbsMapper.insert(bbs);
 		return new ModelAndView("redirect:/user/home");
+	}
+
+	@RequestMapping("/do_search")
+	public ModelAndView doSearch(String title, String content, HttpSession session)
+			throws SolrServerException, IOException {
+		// 判断用户登录
+		User loginUser = (User) session.getAttribute("loginUser");
+		if (null == loginUser) {
+			return new ModelAndView("redirect:/user/login");
+		}
+		ModelAndView mv = new ModelAndView();
+//		String url = "http://localhost:8983/solr/mycore";
+		//SolrServer solr=new HttpSolrServer(baseURL)
+		Bbs bbs = new Bbs();
+		String keyword = "%keyword%";
+		bbs.setTitle(title);
+		bbs.setContent(content);
+		List<Bbs> lists = bbsMapper.getByKeyWord(keyword);
+		List<BbsVo> bbsVoLists = new ArrayList<>();
+		for (Bbs bbs1 : lists) {
+			BbsVo bbsVo = new BbsVo();
+			bbsVo.setId(bbs1.getId());
+			bbsVo.setTitle(bbs1.getTitle());
+			bbsVo.setContent(bbs1.getContent());
+			bbsVo.setTime(bbs1.getTime());
+
+			User user = userMapper.get(bbs1.getId());
+			bbsVo.setOwner(user.getUsername());
+			bbsVoLists.add(bbsVo);
+		}
+		mv.setViewName("/user/search.jsp");
+		mv.addObject("keyword", keyword);
+		return mv;
 	}
 }

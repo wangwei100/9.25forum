@@ -22,4 +22,11 @@ public interface BbsMapper {
 	int countByTitle(@Param("title") String title);
 
 	List<Bbs> getById(Integer id);
+
+	List<Bbs> getByKeyWord(@Param("keyword") String keyword);
+
+
+//	void getByKeyWord(Bbs bbs);
+
+//	void  getByKeyWord(Object keyWord);
 }

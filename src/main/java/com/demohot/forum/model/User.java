@@ -1,15 +1,20 @@
 package com.demohot.forum.model;
 
+import org.apache.solr.client.solrj.beans.Field;
+
 public class User {
-	private Integer id;
+	@Field
+	private String id;
+	@Field
 	private String username;
+	@Field
 	private String password;
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

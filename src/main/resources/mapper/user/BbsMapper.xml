@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demohot.forum.mapper.BbsMapper">
 	<insert id="insert">
-		insert into bbs (title,content,time) values
-		(#{title},#{content},#{time});
+		insert into bbs (title,content,time,user_id) values
+		(#{title},#{content},#{time},#{user_id});
 	</insert>
 
 	<select id="list" resultType="Bbs">
@@ -29,4 +29,8 @@
 		limit #{offset},#{pageSize}
 	</select>
 
+	<select id="getByKeyWord" resultType="Bbs">
+		select * from bbs where
+		title like #{keyword}
+	</select>
 </mapper>

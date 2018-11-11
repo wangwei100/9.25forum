@@ -12,4 +12,6 @@ public class BbsVo extends Bbs {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+
+	
 }

@@ -15,7 +15,7 @@ public interface UserMapper {
 
 	void updatePasswordByUsername(@Param("username") String username, @Param("password") String password);
 
-	User get(@Param("id") Integer id);
+	User get(@Param("id") String string);
 
 	User getByUsername(@Param("username") String username);
 
